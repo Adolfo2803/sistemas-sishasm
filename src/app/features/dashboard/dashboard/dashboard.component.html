@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <!-- Cambiar href por routerLink -->
+    <a class="navbar-brand" routerLink="/dashboard">Dashboard</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <!-- Cambiar href por routerLink y agregar routerLinkActive -->
+          <a class="nav-link"
+             routerLink="/dashboard"
+             routerLinkActive="active">Inicio</a>
+        </li>
+      </ul>
+      <button
+        class="btn btn-light"
+        (click)="logout()"
+        [disabled]="isLoggingOut"
+      >
+        @if (isLoggingOut) {
+          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Cerrando sesión...
+        } @else {
+          Cerrar Sesión
+        }
+      </button>
+    </div>
+  </div>
+</nav>
