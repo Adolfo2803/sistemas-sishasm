@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -10,6 +10,7 @@ import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
+
 @Component({
   selector: 'app-cirugia-list',
   standalone: true,
@@ -17,9 +18,11 @@ import autoTable from 'jspdf-autotable';
   templateUrl: './cirugia-list.component.html',
   styleUrl: './cirugia-list.component.css'
 })
-export default class CirugiaListComponent {
+export default class CirugiaListComponent implements OnInit {
   cirugias: any[] = [];
   cirujanos: any[] = [];
+  logoUrl='./assets/images/logo.png'
+
   filtros = {
     fecha: '',
     numeroQuirofano: '',
@@ -29,12 +32,20 @@ export default class CirugiaListComponent {
   constructor(
     private cirugiaService: CirugiaService,
     private personalMedicoService: PersonalMedicoService
-  ) {}
+  ) {
+
+
+  }
 
   ngOnInit() {
     this.cargarCirugias();
     this.cargarCirujanos();
+
   }
+
+
+
+
 
   cargarCirugias() {
     this.cirugiaService.getCirugias().subscribe({
@@ -96,6 +107,8 @@ export default class CirugiaListComponent {
     }
   }
 
+
+
   exportarExcel(): void {
     const datosParaExportar = this.cirugias.map(cirugia => ({
       'Número de Cirugía': cirugia.numeroCirugia,
@@ -120,37 +133,67 @@ export default class CirugiaListComponent {
     XLSX.writeFile(wb, `Cirugias_${new Date().toISOString().split('T')[0]}.xlsx`);
   }
 
-  exportarPDF(): void {
-    const doc = new jsPDF();
-    const rows = this.cirugias.map(cirugia => [
-      cirugia.numeroCirugia,
-      new Date(cirugia.fechaCirugia).toLocaleDateString(),
-      cirugia.iniciaAnestesia,
-      `Quirófano ${cirugia.numeroQuirofano}`,
-      this.getPacienteNombre(cirugia.paciente),
-      this.getCirujanoNombre(cirugia.cirujano),
-      cirugia.tipoCirugia
-    ]);
 
-    //para otton pdf
+    // Logo en base64 (este es un ejemplo, deberás reemplazarlo con tu logo real)
+    //private readonly LOGO = 'data:assets/images;base64,logo';
+   // const LOGO = 'assets/images/logo.png';
+
+
+
+
+
+
+   async exportarPDF():Promise<void> {
+    const doc = new jsPDF();
+
+ // Configuración de la página
+ const pageWidth = doc.internal.pageSize.width;
+ const pageHeight = doc.internal.pageSize.height;
+ const margin = 20;
+
+ // Agregar membrete
+
+ //para otton pdf
+ await this.agregarMembrete(doc);
+
+
+
+
+
 
     autoTable(doc, {
       head: [['Nº Cirugía', 'Fecha', 'Hora', 'Quirófano', 'Paciente', 'Cirujano', 'Tipo']],
-      body: rows,
-      didDrawPage: function(data) {
-        // Header
-        doc.setFontSize(20);
-        doc.text('Reporte de Cirugías Programadas', 14, 15);
+      body: this.cirugias.map(cirugia => [
+        cirugia.numeroCirugia,
+        new Date(cirugia.fechaCirugia).toLocaleDateString(),
+        cirugia.iniciaAnestesia,
+        `Quirófano ${cirugia.numeroQuirofano}`,
+        this.getPacienteNombre(cirugia.paciente),
+        this.getCirujanoNombre(cirugia.cirujano),
+        cirugia.tipoCirugia
+      ]),
+      startY: 45, // Empezar después del membrete
+      didDrawPage: (data) => {
+        // Agregar membrete en cada nueva página
+        if (data.pageNumber > 1) {
+          this.agregarMembrete(doc);
+        }
 
         // Footer
         doc.setFontSize(10);
+        doc.setTextColor(100);
         doc.text(
-          `Fecha de generación: ${new Date().toLocaleDateString()}`,
-          14,
-          doc.internal.pageSize.height - 10
+          `Página ${data.pageNumber} de ${data.pageCount}`,
+          data.settings.margin.left,
+          pageHeight - 10
+        );
+        doc.text(
+          `Generado el ${new Date().toLocaleDateString()}`,
+          pageWidth - 70,
+          pageHeight - 10
         );
       },
-      margin: { top: 30 }
+      margin: { top: margin }
     });
 
     // Generar el archivo PDF
@@ -158,6 +201,40 @@ export default class CirugiaListComponent {
   }
 
 
+  private async agregarMembrete(doc: jsPDF): Promise<void> {
+    return new Promise((resolve) => {
+        const pageWidth = doc.internal.pageSize.width;
+
+        // Agregar solo el texto del membrete primero
+        try {
+            // Título de la institución
+            doc.setFontSize(16);
+            doc.setTextColor(0);
+            doc.setFont('helvetica', 'bold');
+            doc.text('HOSPITAL GENERAL DE TUXPAN', pageWidth / 2, 15, { align: 'center' });
+
+            // Subtítulo
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'normal');
+            doc.text('DEPARTAMENTO DE CIRUGÍA', pageWidth / 2, 25, { align: 'center' });
+
+            // Título del reporte
+            doc.setFontSize(12);
+            doc.text('REPORTE DE CIRUGÍAS PROGRAMADAS', pageWidth / 2, 35, { align: 'center' });
+
+            // Línea separadora
+            doc.setDrawColor(0);
+            doc.setLineWidth(0.5);
+            doc.line(20, 38, pageWidth - 20, 38);
+
+        } catch (error) {
+            console.error('Error al agregar membrete:', error);
+        }
+        resolve();
+    });
+}
+
 
 
 }
+

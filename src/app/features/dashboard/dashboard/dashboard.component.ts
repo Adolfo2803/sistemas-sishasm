@@ -23,7 +23,7 @@ username: any="Ing. adolfo";
     this.isLoggingOut = true;
 
     // Simulamos un pequeño delay para una mejor experiencia de usuario
-    await new Promise(resolve => setTimeout(resolve, 800));
+    await new Promise(resolve => setTimeout(resolve, 400));
 
     this.authService.logout();
     this.router.navigate(['/login']);
