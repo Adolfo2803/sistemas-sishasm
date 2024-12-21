@@ -25,3 +25,11 @@
   width: 3rem;
   height: 3rem;
 }
+
+.navbar-custom {
+  background-color: #064a1d; /* Cambia el color a tu gusto */
+}
+
+.boton-nav-custom {
+  background-color: #c7a01f; /* Cambia el color a tu gusto */
+}

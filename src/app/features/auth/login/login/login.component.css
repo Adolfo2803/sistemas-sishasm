@@ -16,3 +16,11 @@
 .btn-primary {
   padding: 0.8rem;
 }
+
+.titulo-custom {
+  background-color: #064a1d; /* Cambia el color a tu gusto */
+}
+
+.boton-custom {
+  background-color: #a71d07; /* Cambia el color a tu gusto */
+}

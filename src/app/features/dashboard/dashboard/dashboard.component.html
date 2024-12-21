@@ -1,7 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
   <div class="container-fluid">
-    <!-- Cambiar href por routerLink -->
-    <a class="navbar-brand" routerLink="/dashboard">Dashboard</a>
+    <a class="navbar-brand" routerLink="/dashboard">SisHasm</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -16,14 +15,19 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <!-- Cambiar href por routerLink y agregar routerLinkActive -->
           <a class="nav-link"
              routerLink="/dashboard"
-             routerLinkActive="active">Inicio</a>
+             routerLinkActive="active"
+             [routerLinkActiveOptions]="{exact: true}">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+             routerLink="/dashboard/cirugias"
+             routerLinkActive="active">Cirugías</a>
         </li>
       </ul>
       <button
-        class="btn btn-light"
+        class="btn boton-nav-custom text-light"
         (click)="logout()"
         [disabled]="isLoggingOut"
       >
@@ -37,3 +41,15 @@
     </div>
   </div>
 </nav>
+
+<div class="container mt-4">
+  @if (isLoggingOut) {
+    <div class="loading-overlay">
+      <div class="spinner-border text-light" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  }
+  <!-- Solo mostramos el router-outlet cuando no estamos en la ruta exacta /dashboard -->
+  <router-outlet></router-outlet>
+</div>
