@@ -6,6 +6,9 @@ import { FormsModule } from '@angular/forms';
 import { CirugiaService } from '../../../../core/services/cirugia.service';
 import { CirugiaFiltros, EstadoCirugia } from '../../../../core/models/cirugia.model';
 import { PersonalMedicoService } from '../../../../core/services/personal-medico.service';
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-cirugia-list',
@@ -92,4 +95,69 @@ export default class CirugiaListComponent {
       });
     }
   }
+
+  exportarExcel(): void {
+    const datosParaExportar = this.cirugias.map(cirugia => ({
+      'Número de Cirugía': cirugia.numeroCirugia,
+      'Fecha': new Date(cirugia.fechaCirugia).toLocaleDateString(),
+      'Hora': cirugia.iniciaAnestesia,
+      'Quirófano': `Quirófano ${cirugia.numeroQuirofano}`,
+      'Paciente': this.getPacienteNombre(cirugia.paciente),
+      'Cirujano': this.getCirujanoNombre(cirugia.cirujano),
+      'Tipo de Cirugía': cirugia.tipoCirugia,
+      'Material': cirugia.material,
+      'Medicamento': cirugia.medicamento,
+      'Suturas': cirugia.suturas,
+      'Inicio Anestesia': cirugia.iniciaAnestesia,
+      'Fin Anestesia': cirugia.terminaAnestesia || 'No registrado'
+    }));
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(datosParaExportar);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Cirugías');
+
+    // Generar el archivo Excel
+    XLSX.writeFile(wb, `Cirugias_${new Date().toISOString().split('T')[0]}.xlsx`);
+  }
+
+  exportarPDF(): void {
+    const doc = new jsPDF();
+    const rows = this.cirugias.map(cirugia => [
+      cirugia.numeroCirugia,
+      new Date(cirugia.fechaCirugia).toLocaleDateString(),
+      cirugia.iniciaAnestesia,
+      `Quirófano ${cirugia.numeroQuirofano}`,
+      this.getPacienteNombre(cirugia.paciente),
+      this.getCirujanoNombre(cirugia.cirujano),
+      cirugia.tipoCirugia
+    ]);
+
+    //para otton pdf
+
+    autoTable(doc, {
+      head: [['Nº Cirugía', 'Fecha', 'Hora', 'Quirófano', 'Paciente', 'Cirujano', 'Tipo']],
+      body: rows,
+      didDrawPage: function(data) {
+        // Header
+        doc.setFontSize(20);
+        doc.text('Reporte de Cirugías Programadas', 14, 15);
+
+        // Footer
+        doc.setFontSize(10);
+        doc.text(
+          `Fecha de generación: ${new Date().toLocaleDateString()}`,
+          14,
+          doc.internal.pageSize.height - 10
+        );
+      },
+      margin: { top: 30 }
+    });
+
+    // Generar el archivo PDF
+    doc.save(`Cirugias_${new Date().toISOString().split('T')[0]}.pdf`);
+  }
+
+
+
+
 }
