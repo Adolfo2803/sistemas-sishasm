@@ -1,0 +1,255 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="mb-0">{{ isEditing ? 'Editar' : 'Nueva' }} Cirugía</h2>
+        <button class="btn btn-secondary" routerLink="/dashboard/cirugias">
+          Volver
+        </button>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="cirugiaForm" (ngSubmit)="onSubmit()">
+        <!-- Información básica -->
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Número de Cirugía</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="numeroCirugia">
+            @if (cirugiaForm.get('numeroCirugia')?.hasError('required') &&
+                 cirugiaForm.get('numeroCirugia')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Fecha</label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="fechaCirugia">
+            @if (cirugiaForm.get('fechaCirugia')?.hasError('required') &&
+                 cirugiaForm.get('fechaCirugia')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Quirófano</label>
+            <select class="form-select" formControlName="numeroQuirofano">
+              <option value="">Seleccione un quirófano</option>
+              <option value="1">Quirófano 1</option>
+              <option value="2">Quirófano 2</option>
+              <option value="3">Quirófano 3</option>
+            </select>
+            @if (cirugiaForm.get('numeroQuirofano')?.hasError('required') &&
+                 cirugiaForm.get('numeroQuirofano')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+        </div>
+
+        <!-- Horario -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Hora de Inicio</label>
+            <input
+              type="time"
+              class="form-control"
+              formControlName="iniciaAnestesia">
+            @if (cirugiaForm.get('iniciaAnestesia')?.hasError('required') &&
+                 cirugiaForm.get('iniciaAnestesia')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Hora de Fin</label>
+            <input
+              type="time"
+              class="form-control"
+              formControlName="terminaAnestesia">
+              @if (cirugiaForm.get('terminaAnestesia')?.hasError('required') &&
+              cirugiaForm.get('terminaAnestesia')?.touched) {
+           <small class="text-danger">Este campo es requerido</small>
+         }
+          </div>
+        </div>
+
+        <!-- Personal médico -->
+            <!-- Personal médico y Paciente -->
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label class="form-label">Paciente *</label>
+        <select class="form-select" formControlName="paciente">
+          <option value="">Seleccione un paciente</option>
+          @for (paciente of pacientes; track paciente.id) {
+            <option [value]="paciente.id">{{getNombreCompleto(paciente)}}</option>
+          }
+        </select>
+        @if (cirugiaForm.get('paciente')?.hasError('required') &&
+             cirugiaForm.get('paciente')?.touched) {
+          <small class="text-danger">Este campo es requerido</small>
+        }
+      </div>
+
+  <!-- Cirujano -->
+  <div class="col-md-4">
+    <label class="form-label">Cirujano *</label>
+    <select class="form-select" formControlName="cirujano">
+      <option value="">Seleccione un cirujano</option>
+      @for (cirujano of cirujanos; track cirujano.id) {
+        <option [value]="cirujano.id">{{getCirujanoCompleto(cirujano)}}</option>
+      }
+    </select>
+  </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Anestesiólogo *</label>
+        <select class="form-select" formControlName="anestesiologo">
+          <option value="">Seleccione un anestesiólogo</option>
+          @for (anestesiologo of anestesiologos; track anestesiologo.id) {
+            <option [value]="anestesiologo.id">{{getAnestesiologoCompleto(anestesiologo)}}</option>
+          }
+        </select>
+        @if (cirugiaForm.get('anestesiologo')?.hasError('required') &&
+             cirugiaForm.get('anestesiologo')?.touched) {
+          <small class="text-danger">Este campo es requerido</small>
+        }
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Instrumentista *</label>
+        <select class="form-select" formControlName="instrumentista">
+          <option value="">Seleccione un instrumentista</option>
+          @for (instrumentista of instrumentistas; track instrumentista.id) {
+            <option [value]="instrumentista.id">{{getCirculanteCompleto(instrumentista)}}</option>
+          }
+        </select>
+        @if (cirugiaForm.get('instrumentista')?.hasError('required') &&
+             cirugiaForm.get('instrumentista')?.touched) {
+          <small class="text-danger">Este campo es requerido</small>
+        }
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Circulante *</label>
+        <select class="form-select" formControlName="circulante">
+          <option value="">Seleccione un circulante</option>
+          @for (circulante of circulantes; track circulante.id) {
+            <option [value]="circulante.id">{{getCirculanteCompleto(circulante)}}</option>
+          }
+        </select>
+        @if (cirugiaForm.get('circulante')?.hasError('required') &&
+             cirugiaForm.get('circulante')?.touched) {
+          <small class="text-danger">Este campo es requerido</small>
+        }
+      </div>
+    </div>
+
+    <!-- Personal de Apoyo -->
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label class="form-label">Residentes</label>
+        <select multiple class="form-select" formControlName="residentes">
+          @for (residente of residentes; track residente.id) {
+            <option [value]="residente.id">{{getResiCompleto(residente)}}</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Internos</label>
+        <select multiple class="form-select" formControlName="internos">
+          @for (interno of internos; track interno.id) {
+            <option [value]="interno.id">{{getInternoCompleto(interno)}}</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Apoyo Externo</label>
+        <select multiple class="form-select" formControlName="apoyoExterno">
+          @for (apoyo of apoyoExterno; track apoyo.id) {
+            <option [value]="apoyo.id">{{getApoyoExternoCompleto(apoyo)}}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+        <!--Tipo Cirugia -->
+        <div class="row mb-3">
+
+
+          <div class="col-md-12">
+            <label class="form-label">Tipo de Cirugía</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="tipoCirugia">
+          </div>
+        </div>
+
+        <!-- Notas -->
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Material</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="material">
+            @if (cirugiaForm.get('material')?.hasError('required') &&
+                 cirugiaForm.get('material')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Medicamento</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="medicamento">
+            @if (cirugiaForm.get('medicamento')?.hasError('required') &&
+                 cirugiaForm.get('medicamento')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Suturas</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="suturas">
+            @if (cirugiaForm.get('suturas')?.hasError('required') &&
+                 cirugiaForm.get('suturas')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+
+
+        </div>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-end gap-2">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            routerLink="/dashboard/cirugias">
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="cirugiaForm.invalid || isSubmitting">
+            {{ isSubmitting ? 'Guardando...' : (isEditing ? 'Actualizar' : 'Guardar') }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
