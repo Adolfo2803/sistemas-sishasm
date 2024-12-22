@@ -10,11 +10,13 @@ import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
+import { NgbCarouselConfig, NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-cirugia-list',
   standalone: true,
-  imports: [RouterLink,CommonModule, RouterModule, FormsModule],
+  imports: [RouterLink,CommonModule, RouterModule, FormsModule,NgbModule ],
   templateUrl: './cirugia-list.component.html',
   styleUrl: './cirugia-list.component.css'
 })
@@ -22,6 +24,7 @@ export default class CirugiaListComponent implements OnInit {
   cirugias: any[] = [];
   cirujanos: any[] = [];
   logoUrl='./assets/images/logo.png'
+  cirugiaSeleccionada: any;
 
   filtros = {
     fecha: '',
@@ -31,11 +34,17 @@ export default class CirugiaListComponent implements OnInit {
 
   constructor(
     private cirugiaService: CirugiaService,
-    private personalMedicoService: PersonalMedicoService
+    private personalMedicoService: PersonalMedicoService,
+    private modalService: NgbModal
   ) {
 
 
   }
+
+  verDetalle(cirugia: any, modal: any) {
+    this.cirugiaSeleccionada = cirugia;
+    this.modalService.open(modal, { size: 'lg' });
+}
 
   ngOnInit() {
     this.cargarCirugias();
@@ -69,7 +78,7 @@ export default class CirugiaListComponent implements OnInit {
 
   getPacienteNombre(paciente: any): string {
     if (!paciente) return 'N/A';
-    return `${paciente.nombre} ${paciente.apPaterno} ${paciente.apMaterno}`;
+    return `${paciente.nombre} ${paciente.apPaterno} ${paciente.apMaterno} - ${paciente.expediente}`;
   }
 
   getCirujanoNombre(cirujano: any): string {
@@ -80,23 +89,38 @@ export default class CirugiaListComponent implements OnInit {
   aplicarFiltros() {
     let filtrosAplicados: any = {};
 
+    // Solo aplicar el filtro que tenga valor
     if (this.filtros.fecha) {
       filtrosAplicados.fecha = this.filtros.fecha;
-    }
-    if (this.filtros.numeroQuirofano) {
+    } else if (this.filtros.numeroQuirofano) {
       filtrosAplicados.numeroQuirofano = this.filtros.numeroQuirofano;
-    }
-    if (this.filtros.cirujanoId) {
+    } else if (this.filtros.cirujanoId) {
       filtrosAplicados.cirujanoId = this.filtros.cirujanoId;
     }
 
     this.cirugiaService.getCirugias(filtrosAplicados).subscribe({
       next: (data) => {
+        console.log('Cirugías filtradas:', data);
         this.cirugias = data;
       },
-      error: (error) => console.error('Error aplicando filtros:', error)
+      error: (error) => {
+        console.error('Error al filtrar cirugías:', error);
+      }
     });
   }
+
+
+  limpiarFiltros() {
+    this.filtros = {
+      fecha: '',
+      numeroQuirofano: '',
+      cirujanoId: ''
+    };
+    this.cargarCirugias(); // Volver a cargar todas las cirugías
+  }
+
+
+
 
   eliminarCirugia(id: number) {
     if (confirm('¿Está seguro de eliminar esta cirugía?')) {

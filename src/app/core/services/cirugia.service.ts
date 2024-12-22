@@ -12,28 +12,22 @@ export class CirugiaService {
 
   constructor(private http: HttpClient) {}
 
-  getCirugias(filtros?: CirugiaFiltros): Observable<Cirugia[]> {
-    let params = new HttpParams();
-
+  getCirugias(filtros?: any): Observable<any[]> {
+    // Si hay filtros, usar los endpoints específicos
     if (filtros) {
       if (filtros.fecha) {
-        params = params.set('fecha', filtros.fecha.toISOString());
+        return this.http.get<any[]>(`${this.apiUrl}/fecha/${filtros.fecha}`);
       }
       if (filtros.numeroQuirofano) {
-        params = params.set('numeroQuirofano', filtros.numeroQuirofano.toString());
-      }
-      if (filtros.estado) {
-        params = params.set('estado', filtros.estado);
+        return this.http.get<any[]>(`${this.apiUrl}/quirofano/${filtros.numeroQuirofano}`);
       }
       if (filtros.cirujanoId) {
-        params = params.set('cirujanoId', filtros.cirujanoId.toString());
-      }
-      if (filtros.pacienteId) {
-        params = params.set('pacienteId', filtros.pacienteId.toString());
+        return this.http.get<any[]>(`${this.apiUrl}/cirujano/${filtros.cirujanoId}`);
       }
     }
 
-    return this.http.get<Cirugia[]>(this.apiUrl, { params });
+    // Si no hay filtros, obtener todas
+    return this.http.get<any[]>(`${this.apiUrl}`);
   }
 
   getCirugiaById(id: number): Observable<Cirugia> {

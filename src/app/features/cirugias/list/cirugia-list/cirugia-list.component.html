@@ -16,55 +16,57 @@
   </div>
 
   <!-- Filtros -->
-  <div class="card mb-4">
-    <div class="card-body">
-      <div class="row g-3">
-        <div class="col-md-4">
-          <label class="form-label">Fecha</label>
-          <input
-            type="date"
-            class="form-control"
-            [(ngModel)]="filtros.fecha">
-        </div>
+<!-- Sección de Filtros -->
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">Fecha</label>
+        <input
+          type="date"
+          class="form-control"
+          [(ngModel)]="filtros.fecha"
+          (change)="aplicarFiltros()">
+      </div>
 
-        <div class="col-md-4">
-          <label class="form-label">Quirófano</label>
-          <select
-            class="form-select"
-            [(ngModel)]="filtros.numeroQuirofano">
-            <option value="">Todos</option>
-            <option value="1">Quirófano 1</option>
-            <option value="2">Quirófano 2</option>
-            <option value="3">Quirófano 3</option>
-            <option value="4">Quirófano 4</option>
-            <option value="5">Quirófano 5</option>
-          </select>
-        </div>
+      <div class="col-md-4">
+        <label class="form-label">Quirófano</label>
+        <select
+          class="form-select"
+          [(ngModel)]="filtros.numeroQuirofano"
+          (change)="aplicarFiltros()">
+          <option value="">Todos</option>
+          <option value="1">Quirófano 1</option>
+          <option value="2">Quirófano 2</option>
+          <option value="3">Quirófano 3</option>
+          <option value="4">Quirófano 4</option>
+          <option value="5">Quirófano 5</option>
+        </select>
+      </div>
 
-        <div class="col-md-4">
-          <label class="form-label">Cirujano</label>
-          <select
-            class="form-select"
-            [(ngModel)]="filtros.cirujanoId">
-            <option value="">Todos</option>
-            @for (cirujano of cirujanos; track cirujano.id) {
-              <option [value]="cirujano.id">
-                {{getCirujanoNombre(cirujano)}}
-              </option>
-            }
-          </select>
-        </div>
+      <div class="col-md-4">
+        <label class="form-label">Cirujano</label>
+        <select
+          class="form-select"
+          [(ngModel)]="filtros.cirujanoId"
+          (change)="aplicarFiltros()">
+          <option value="">Todos</option>
+          @for (cirujano of cirujanos; track cirujano.id) {
+            <option [value]="cirujano.id">{{getCirujanoNombre(cirujano)}}</option>
+          }
+        </select>
+      </div>
 
-        <div class="col-12">
-          <button
-            class="btn btn-primary w-100"
-            (click)="aplicarFiltros()">
-            Buscar
-          </button>
-        </div>
+      <div class="col-12">
+        <button
+          class="btn btn-outline-secondary"
+          (click)="limpiarFiltros()">
+          <i class="bi bi-x-circle me-2"></i>Limpiar Filtros
+        </button>
       </div>
     </div>
   </div>
+</div>
 
   <!-- Tabla -->
   <div class="table-responsive">
@@ -98,6 +100,11 @@
             <td>{{cirugia.tipoCirugia}}</td>
             <td>
               <button
+              class="btn btn-sm btn-outline-info me-2"
+              (click)="verDetalle(cirugia, modalDetalle)">
+              <i class="bi bi-eye"></i>
+            </button>
+              <button
                 class="btn btn-sm btn-outline-primary me-2"
                 [routerLink]="[cirugia.id, 'edit']">
                 <i class="bi bi-pencil"></i>
@@ -114,3 +121,85 @@
     </table>
   </div>
 </div>
+
+
+<!-- Modal de Detalle -->
+<ng-template #modalDetalle let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Detalle de Cirugía</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (cirugiaSeleccionada) {
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Información General</h5>
+          <p><strong>Número de Cirugía:</strong> {{cirugiaSeleccionada.numeroCirugia}}</p>
+          <p><strong>Fecha:</strong> {{cirugiaSeleccionada.fechaCirugia | date:'dd/MM/yyyy'}}</p>
+          <p><strong>Quirófano:</strong> {{cirugiaSeleccionada.numeroQuirofano}}</p>
+          <p><strong>Tipo de Cirugía:</strong> {{cirugiaSeleccionada.tipoCirugia}}</p>
+        </div>
+        <div class="col-md-6">
+          <h5>Horarios</h5>
+          <p><strong>Inicio Anestesia:</strong> {{cirugiaSeleccionada.iniciaAnestesia}}</p>
+          <p><strong>Fin Anestesia:</strong> {{cirugiaSeleccionada.terminaAnestesia || 'No registrado'}}</p>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <h5>Personal Médico Principal</h5>
+          <p><strong>Paciente:</strong> {{getPacienteNombre(cirugiaSeleccionada.paciente)}}</p>
+          <p><strong>Cirujano:</strong> {{getCirujanoNombre(cirugiaSeleccionada.cirujano)}}</p>
+          <p><strong>Anestesiólogo:</strong> {{getCirujanoNombre(cirugiaSeleccionada.anestesiologo)}}</p>
+          <p><strong>Instrumentista:</strong> {{getCirujanoNombre(cirugiaSeleccionada.instrumentista)}}</p>
+          <p><strong>Circulante:</strong> {{getCirujanoNombre(cirugiaSeleccionada.circulante)}}</p>
+        </div>
+        <div class="col-md-6">
+          <h5>Personal de Apoyo</h5>
+          @if (cirugiaSeleccionada.residentes?.length) {
+            <div>
+              <strong>Residentes:</strong>
+              <ul>
+                @for (residente of cirugiaSeleccionada.residentes; track residente.id) {
+                  <li>{{getCirujanoNombre(residente)}}</li>
+                }
+              </ul>
+            </div>
+          }
+          @if (cirugiaSeleccionada.internos?.length) {
+            <div>
+              <strong>Internos:</strong>
+              <ul>
+                @for (interno of cirugiaSeleccionada.internos; track interno.id) {
+                  <li>{{getCirujanoNombre(interno)}}</li>
+                }
+              </ul>
+            </div>
+          }@if (cirugiaSeleccionada.apoyoExterno?.length) {
+            <div>
+              <strong>Apoyo Externo:</strong>
+              <ul>
+                @for (apoyo of cirugiaSeleccionada.apoyoExterno; track apoyo.id) {
+                  <li>{{getCirujanoNombre(apoyo)}}</li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-12">
+          <h5>Material y Medicamentos</h5>
+          <p><strong>Material:</strong> {{cirugiaSeleccionada.material}}</p>
+          <p><strong>Medicamentos:</strong> {{cirugiaSeleccionada.medicamento}}</p>
+          <p><strong>Suturas:</strong> {{cirugiaSeleccionada.suturas}}</p>
+        </div>
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Cerrar</button>
+  </div>
+</ng-template>

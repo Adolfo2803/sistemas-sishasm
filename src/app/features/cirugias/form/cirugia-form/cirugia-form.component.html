@@ -87,7 +87,7 @@
         <select class="form-select" formControlName="paciente">
           <option value="">Seleccione un paciente</option>
           @for (paciente of pacientes; track paciente.id) {
-            <option [value]="paciente.id">{{getNombreCompleto(paciente)}}</option>
+            <option [value]="paciente.id">{{getNombreCompleto(paciente)}}- {{paciente.expediente}}</option>
           }
         </select>
         @if (cirugiaForm.get('paciente')?.hasError('required') &&
