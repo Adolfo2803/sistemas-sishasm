@@ -87,15 +87,11 @@ export default class CirugiaFormComponent implements OnInit {
   }
 
   cargarPacientes() {
-    console.log('Cargando pacientes...');
-    this.pacienteService.getPacientesConLog().subscribe({
+    this.pacienteService.getPacientes().subscribe({
       next: (data) => {
-        console.log('Pacientes cargados:', data);
-        this.pacientes = data;
+        this.pacientes = data.filter(paciente => paciente.status === 'ACTIVO');
       },
-      error: (error) => {
-        console.error('Error cargando pacientes:', error);
-      }
+      error: (error) => console.error('Error cargando pacientes:', error)
     });
   }
 
@@ -274,8 +270,25 @@ export default class CirugiaFormComponent implements OnInit {
 
   cargarCatalogos() {
     // Cargamos todos los catálogos necesarios
-    this.pacienteService.getPacientes()
-      .subscribe(data => this.pacientes = data);
+    // this.pacienteService.getPacientes()
+    //   .subscribe({
+    //     next: (data) => {
+    //       this.pacientes = data.filter(paciente => paciente.status === 'ACTIVO');
+    //     },
+    //     error: (error) => console.error('Error cargando pacientes:', error)
+    //   });
+
+    this.pacienteService.getPacientes().subscribe({
+      next: (data) => {
+        this.pacientes = data.filter(paciente => paciente.status === 'ACTIVO');
+      },
+      error: (error) => console.error('Error cargando pacientes:', error)
+    });
+
+
+
+
+
 
       this.personalMedicoService.getCirujanos().subscribe({
         next: (data) => this.cirujanos = data,

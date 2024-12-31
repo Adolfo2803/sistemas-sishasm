@@ -240,7 +240,7 @@ export default class CirugiaListComponent implements OnInit {
             // Subtítulo
             doc.setFontSize(14);
             doc.setFont('helvetica', 'normal');
-            doc.text('DEPARTAMENTO DE CIRUGÍA', pageWidth / 2, 25, { align: 'center' });
+            doc.text('DR EMILIO ALCAZAR', pageWidth / 2, 25, { align: 'center' });
 
             // Título del reporte
             doc.setFontSize(12);

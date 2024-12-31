@@ -1,31 +1,47 @@
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">Bienvenido al Dashboard</h5>
-    <p class="card-text">Este es el panel de control de la aplicación.</p>
+    <h5 class="card-title">Dashboard Quirúrgico</h5>
+    <p class="card-text text-muted">Vista general del rendimiento quirúrgico</p>
 
-    <!-- Aquí puedes agregar widgets, estadísticas, etc. -->
-    <div class="row mt-4">
-      <div class="col-md-4">
-        <div class="card">
+    <div class="row g-4 mb-4">
+      <div class="col-md-4 col-lg-2" *ngFor="let stat of statsData">
+        <div class="card h-100">
           <div class="card-body">
-            <h6>Cirugías Programadas</h6>
-            <p class="h3">0</p>
+            <div class="d-flex justify-content-between">
+              <div>
+                <h6 class="text-muted">{{stat.title}}</h6>
+                <h3>{{stat.value}}</h3>
+                <small class="text-success">{{stat.delta}}</small>
+              </div>
+              <i [class]="stat.icon + ' fs-1 text-' + stat.color"></i>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-6">
         <div class="card">
           <div class="card-body">
-            <h6>Cirugías del Día</h6>
-            <p class="h3">0</p>
+            <h6 class="card-title">Tendencia de Cirugías</h6>
+            <canvas baseChart
+              [data]="lineChartData"
+             
+              [type]="'line'">
+            </canvas>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-lg-6">
         <div class="card">
           <div class="card-body">
-            <h6>Total de Pacientes</h6>
-            <p class="h3">0</p>
+            <h6 class="card-title">Distribución por Especialidad</h6>
+            <canvas baseChart
+              [data]="barChartData"
+              [options]="barChartOptions"
+              [type]="'bar'">
+            </canvas>
           </div>
         </div>
       </div>

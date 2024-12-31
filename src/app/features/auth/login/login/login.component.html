@@ -1,74 +1,103 @@
-<div class="container">
-  <div class="row justify-content-center align-items-center min-vh-100">
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card shadow">
 
-        <div class="card-header titulo-custom text-white text-center py-3">
 
-          <h4 class="mb-0">Iniciar Sesión</h4>
-        </div>
+<header class=" header-custom  shadow text-light">
+  <div class=" px-4">
+    <div class="d-flex justify-content-between align-items-center py-2">
+      <!-- Logo -->
+      <div class="d-flex align-items-center ">
 
-        <div class="card-body p-4">
-          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-              <label for="username" class="form-label">Usuario</label>
-              <input
-                type="text"
-                class="form-control"
-                id="username"
-                formControlName="username"
-                [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
-              >
-              @if (loginForm.get('username')?.hasError('required') && loginForm.get('username')?.touched) {
-                <div class="invalid-feedback">
-                  El usuario es requerido
-                </div>
-              }
-            </div>
-
-            <div class="mb-3">
-              <label for="password" class="form-label">Contraseña</label>
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                formControlName="password"
-                [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-              >
-              @if (loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched) {
-                <div class="invalid-feedback">
-                  La contraseña es requerida
-                </div>
-              }
-            </div>
-
-            <button
-              type="submit"
-              class="btn boton-custom text-light w-100 mb-3"
-              [disabled]="!loginForm.valid || isLoading"
-            >
-              @if (isLoading) {
-                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                Cargando...
-              } @else {
-                Iniciar Sesión
-              }
-            </button>
-          </form>
-
-          @if (error) {
-            <div class="alert alert-danger mt-3" role="alert">
-              {{ error }}
-            </div>
-          }
-
-          <div class="text-center mt-3">
-            <a routerLink="/register" class="text-decoration-none">
-              ¿No tienes cuenta? Regístrate aquí
-            </a>
-          </div>
-        </div>
+        <img src="assets/logo-b.webp" alt="Descripción de la imagen">
       </div>
+
+      <!-- Título del Hospital -->
+      <div class="text-center">
+        <h2 class=" text-gray-800">HOSPITAL GENERAL TUXPAN DR EMILIO ALCAZAR</h2>
+
+      </div>
+
+      <!-- Usuario y Cerrar Sesión -->
+
+    </div>
+  </div>
+</header>
+
+
+<div class="row  justify-content-center align-items-center min-vh-100  login-image">
+  <div class= "col-12 col-md-6 col-lg-4">
+    <div class="card shadow">
+
+      <!-- <div class=" card-header titulo-custom text-white text-center py-3">
+
+        <h3 class="mb-0">Ingreso al Sistema</h3>
+      </div> -->
+     <!-- aui -->
+      <div class="card-body p-4 glass-card">
+        <div class="logo-container">
+          <img src="assets/logo.png" alt="Logo">
+        </div>
+
+        <!-- <h3 class="login-title">Iniciar Sesión</h3> -->
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="username" class="form-label">Usuario</label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              formControlName="username"
+              [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+            >
+            @if (loginForm.get('username')?.hasError('required') && loginForm.get('username')?.touched) {
+              <div class="invalid-feedback">
+                El usuario es requerido
+              </div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              formControlName="password"
+              [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+            >
+            @if (loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched) {
+              <div class="invalid-feedback">
+                La contraseña es requerida
+              </div>
+            }
+          </div>
+
+          <button
+            type="submit"
+            class="btn boton-custom text-light w-100 mb-3"
+            [disabled]="!loginForm.valid || isLoading"
+          >
+            @if (isLoading) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Cargando...
+            } @else {
+              Iniciar Sesión
+            }
+          </button>
+  </form>
+
+  @if (error) {
+    <div class="alert alert-danger mt-3" role="alert">
+      {{ error }}
+    </div>
+  }
+</div>
+
+
+
+
+
+
+
     </div>
   </div>
 </div>

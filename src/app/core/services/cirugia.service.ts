@@ -8,6 +8,7 @@ import { Cirugia, CirugiaFiltros } from '../models/cirugia.model';
   providedIn: 'root'
 })
 export class CirugiaService {
+  // private apiUrl = 'http://172.16.36.147:8080/api/cirugias';
   private apiUrl = 'http://localhost:8080/api/cirugias';
 
   constructor(private http: HttpClient) {}

@@ -14,3 +14,9 @@ export interface AuthResponse {
   token: string;
   username: string;
 }
+
+export interface Usuarios {
+  id: number;
+  username: string;
+  
+}

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import CirugiaFormComponent from './cirugia-form.component';
 
-import { CirugiaFormComponent } from './cirugia-form.component';
+
 
 describe('CirugiaFormComponent', () => {
   let component: CirugiaFormComponent;

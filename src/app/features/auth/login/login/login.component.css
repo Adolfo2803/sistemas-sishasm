@@ -1,26 +1,116 @@
-:host {
-  display: block;
-  background-color: #f8f9fa;
-  min-height: 100vh;
-}
-
 .card {
   border: none;
-  border-radius: 1rem;
-}
-
-.card-header {
-  border-radius: 1rem 1rem 0 0 !important;
-}
-
-.btn-primary {
-  padding: 0.8rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(105, 28, 50, 0.12) !important;
 }
 
 .titulo-custom {
-  background-color: #064a1d; /* Cambia el color a tu gusto */
+  background-color: #BC955C;
+  border-top-left-radius: 1px;
+  border-top-right-radius: 11px;
+  border-bottom: 5px solid #691C32;
+}
+
+.form-control {
+  border: 1.5px solid #e0e0e0;
+  padding: 12px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #BC955C;
+  box-shadow: 0 0 0 0.2rem rgba(188, 149, 92, 0.25);
 }
 
 .boton-custom {
-  background-color: #a71d07; /* Cambia el color a tu gusto */
+  background-color: #691C32;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.boton-custom:hover:not(:disabled) {
+  background-color: #7c2340;
+  transform: translateY(-1px);
+}
+
+.boton-custom:disabled {
+  background-color: #691C32;
+  opacity: 0.7;
+}
+
+.invalid-feedback {
+  color: #691C32;
+}
+
+.alert-danger {
+  background-color: rgba(105, 28, 50, 0.1);
+  border-color: rgba(105, 28, 50, 0.2);
+  color: #691C32;
+}
+
+/* Estilos para el spinner */
+.spinner-border {
+  color: #fff;
+}
+
+/* Agregar una transición suave al card */
+.card {
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+
+img {
+  width: 280px;
+  height: auto;
+  /* Otros estilos para la imagen */
+}
+
+.header-custom {
+  background-color: #691C32; /* Cambia el color a tu gusto */
+}
+
+
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logo-container img {
+  max-width: 150px;
+  height: auto;
+}
+
+.login-title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.login-image {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('/assets/fondo2.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
 }
