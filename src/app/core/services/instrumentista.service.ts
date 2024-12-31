@@ -10,7 +10,8 @@ import { Instrumentista } from '../models/personal-medico.model';
 })
 export class InstrumentistaService {
   // private readonly baseUrl = 'http://172.16.36.147:8080/api/instrumentistas';
-  private readonly baseUrl = 'http://localhost:8080/api/instrumentistas';
+  private readonly baseUrl = 'http://192.168.1.75:8080/api/instrumentistas';
+  // private readonly baseUrl = 'http://localhost:8080/api/instrumentistas';
   private http = inject(HttpClient);
 
   getAll(): Observable<Instrumentista[]> {

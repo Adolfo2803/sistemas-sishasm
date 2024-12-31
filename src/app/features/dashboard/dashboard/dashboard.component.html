@@ -33,19 +33,38 @@
         </li>
 
         <!-- Cirugías -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" routerLink="/dashboard/cirugias" routerLinkActive="active">
             Cirugías
           </a>
-        </li>
+        </li> -->
+         <!-- Cirugías - visible para ADMIN y CIRUGIAS -->
+  @if (authService.hasRole(['ADMIN', 'USUARIO2'])) {
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/dashboard/cirugias" routerLinkActive="active">
+        Cirugías
+      </a>
+    </li>
+  }
 
         <!-- Pacientes -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" routerLink="/dashboard/pacientes" routerLinkActive="active">
             Pacientes
           </a>
-        </li>
+        </li> -->
 
+          <!-- Pacientes - visible para ADMIN y PACIENTES -->
+  @if (authService.hasRole(['ADMIN', 'USUARIO1'])) {
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/dashboard/pacientes" routerLinkActive="active">
+        Pacientes
+      </a>
+    </li>
+  }
+
+    <!-- Personal Médico - solo visible para ADMIN -->
+    @if (authService.hasRole(['ADMIN'])) {
         <!-- Personal Médico (Dropdown) -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
@@ -66,7 +85,10 @@
             </li>
           </ul>
         </li>
+      }
 
+       <!-- Personal de Apoyo - solo visible para ADMIN -->
+  @if (authService.hasRole(['ADMIN'])) {
         <!-- Personal de Apoyo (Dropdown) -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
@@ -90,7 +112,7 @@
             Enfermeria
           </a>
         </li> -->
-
+      }
       </ul>
 
       <!-- <button class="btn btn-light" (click)="logout()" [disabled]="isLoggingOut">

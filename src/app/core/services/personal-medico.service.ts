@@ -18,7 +18,8 @@ import { Paciente } from '../models/paciente.model';
 })
 export class PersonalMedicoService {
   // private baseUrl = 'http://172.16.36.147:8080/api';
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = 'http://192.168.1.75:8080/api';
+  // private baseUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
 

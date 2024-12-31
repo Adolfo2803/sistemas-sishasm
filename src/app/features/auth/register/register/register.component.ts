@@ -8,7 +8,9 @@ import { Router } from '@angular/router';
 enum UserRole {
   USUARIO = 'USUARIO',
   ADMIN = 'ADMIN',
-  INVITADO = 'INVITADO'
+  INVITADO = 'INVITADO',
+  USUARIO1 = 'USUARIO1',
+  USUARIO2 = 'USUARIO2',
 }
 
 @Component({
@@ -56,7 +58,7 @@ export class RegisterComponent {
 
       this.authService.register(registerData).subscribe({
         next: (response) => {
-        
+
           this.isLoading = false;
           this.error = 'Error en el registro. Por favor, intenta nuevamente.';
         },

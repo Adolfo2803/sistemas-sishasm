@@ -4,9 +4,13 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { LoginRequest, RegisterRequest, AuthResponse, Usuarios } from '../models/auth.models';
-import { Usuario } from '../models/usuario.model';
+import { Usuario, RolUsuario } from '../models/usuario.model';
 
-
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  CIRUGIAS = 'USUARIO1',
+  PACIENTES = 'USUARIO2'
+}
 
 
 @Injectable({
@@ -14,13 +18,15 @@ import { Usuario } from '../models/usuario.model';
 })
 export class AuthService {
   // private readonly API_URL = 'http://172.16.36.147:8080/api/auth';
-  private readonly API_URL = 'http://localhost:8080/api/auth';
+  private readonly API_URL = 'http://192.168.1.75:8080/api/auth';
+  // private readonly API_URL = 'http://localhost:8080/api/auth';
+  private token: string | null = null;
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
   private isBrowser: boolean;
   private usuarioActual = new BehaviorSubject<Usuarios | null>(null);
   usuarioActual$ = this.usuarioActual.asObservable();
-
+  private userRole: string | null = null;
 
   constructor(
     private http: HttpClient,
@@ -50,26 +56,56 @@ export class AuthService {
   // }
 
 
-// auth.service.ts
+// auth.service.ts el bueno
+// login(credentials: LoginRequest): Observable<AuthResponse> {
+//   return this.http.post<AuthResponse>(`${this.API_URL}/login`, credentials)
+//     .pipe(
+//       tap(response => {
+//         console.log('Respuesta completa del login:', response); // Para debug
+//         if (this.isBrowser) {
+//           localStorage.setItem('token', response.token);
+//           this.isAuthenticatedSubject.next(true);
+//           // Verificar que se guardó
+//           const savedToken = localStorage.getItem('token');
+//           console.log('Token guardado después de login:', savedToken);
+//         }
+//       }),
+//       catchError(error => {
+//         console.error('Error en login:', error);
+//         return throwError(() => error);
+//       })
+//     );
+// }
+
 login(credentials: LoginRequest): Observable<AuthResponse> {
-  return this.http.post<AuthResponse>(`${this.API_URL}/login`, credentials)
-    .pipe(
-      tap(response => {
-        console.log('Respuesta completa del login:', response); // Para debug
-        if (this.isBrowser) {
-          localStorage.setItem('token', response.token);
-          this.isAuthenticatedSubject.next(true);
-          // Verificar que se guardó
-          const savedToken = localStorage.getItem('token');
-          console.log('Token guardado después de login:', savedToken);
-        }
-      }),
-      catchError(error => {
-        console.error('Error en login:', error);
-        return throwError(() => error);
-      })
-    );
+  return this.http.post<AuthResponse>(`${this.API_URL}/login`, credentials).pipe(
+    tap(response => {
+      if (this.isBrowser) {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('role', response.rol);
+        this.userRole = response.rol;
+        this.isAuthenticatedSubject.next(true);
+      }
+    }),
+    catchError(error => {
+      console.error('Error en login:', error);
+      return throwError(() => error);
+    })
+  );
 }
+
+getUserRole(): string {
+  return this.userRole || localStorage.getItem('role') || '';
+}
+
+hasRole(roles: string[]): boolean {
+  const userRole = this.getUserRole();
+  return roles.includes(userRole);
+}
+
+
+
+
 
 
   setUsuarioActual(usuario: Usuarios) {

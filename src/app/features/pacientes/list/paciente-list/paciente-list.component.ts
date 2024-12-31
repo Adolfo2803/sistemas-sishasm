@@ -4,12 +4,12 @@ import { PacienteService } from '../../../../core/services/paciente.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-paciente-list',
   standalone: true,
-  imports: [RouterLink, CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [RouterLink, CommonModule, ReactiveFormsModule, FormsModule, ],
   templateUrl: './paciente-list.component.html',
   styleUrl: './paciente-list.component.css'
 })
@@ -112,7 +112,7 @@ export default class PacienteListComponent implements OnInit {
   // }
 
   buscarPaciente() {
-    if (this.filtros.expediente || this.filtros.curp || this.filtros.nombre) {
+    if (this.filtros.expediente) {
       this.pacienteService.buscarPorExpediente(this.filtros.expediente).subscribe({
         next: (paciente) => {
           this.pacientes = [paciente];
@@ -127,7 +127,39 @@ export default class PacienteListComponent implements OnInit {
           this.totalItems = 0;
         }
       });
-    } else {
+    } else if (this.filtros.curp) {
+          this.pacienteService.buscarPorCurp(this.filtros.curp).subscribe({
+            next: (paciente) => {
+              this.pacientes = [paciente];
+              this.pacientesFiltrados = this.pacientes;
+              this.totalItems = this.pacientesFiltrados.length;
+              this.currentPage = 1;
+              this.updatePaginatedItems();
+            },
+            error: () => {
+              this.pacientes = [];
+              this.pacientesFiltrados = [];
+              this.totalItems = 0;
+            }
+          });
+        }else if (this.filtros.nombre) {
+              this.pacienteService.buscarPorNombre(this.filtros.nombre).subscribe({
+                next: (paciente) => {
+                  this.pacientes = [paciente];
+                  this.pacientesFiltrados = this.pacientes;
+                  this.totalItems = this.pacientesFiltrados.length;
+                  this.currentPage = 1;
+                  this.updatePaginatedItems();
+                },
+                error: () => {
+                  this.pacientes = [];
+                  this.pacientesFiltrados = [];
+                  this.totalItems = 0;
+                }
+              });
+            }
+
+    else {
       this.cargarPacientes();
     }
   }

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { publicGuard } from './core/guards/public.guard';
+import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   // Rutas públicas agrupadas
@@ -40,6 +41,8 @@ export const routes: Routes = [
       // Cirugías
       {
         path: 'cirugias',
+        canActivate: [() => roleGuard(['ADMIN', 'USUARIO2'])],
+        canMatch: [() => roleGuard(['ADMIN', 'USUARIO2'])],
         children: [
           {
             path: '',
@@ -58,6 +61,8 @@ export const routes: Routes = [
       // Pacientes
       {
         path: 'pacientes',
+        canActivate: [() => roleGuard(['ADMIN', 'USUARIO1'])],
+        canMatch: [() => roleGuard(['ADMIN', 'USUARIO1'])],
         children: [
           {
             path: '',
@@ -76,6 +81,7 @@ export const routes: Routes = [
       // Personal Médico
       {
         path: 'personal',
+        canActivate: [() => roleGuard(['ADMIN'])],
         children: [
           // Cirujanos
           {
@@ -154,6 +160,7 @@ export const routes: Routes = [
       // Personal de Apoyo
       {
         path: 'apoyo',
+        canActivate: [() => roleGuard(['ADMIN'])],
         children: [
           // Residentes
           {

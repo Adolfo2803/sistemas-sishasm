@@ -21,7 +21,7 @@ currentUser1:Usuarios | null = null;
 imageUrl = "../../assets/images/logo.jpg";
 actual :string = '';
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router
   ) {
 

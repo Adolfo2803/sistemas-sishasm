@@ -10,7 +10,8 @@ import { Circulante, Interno } from '../models/personal-medico.model';
 })
 export class InternoService {
   // private readonly baseUrl = 'http://172.16.36.147:8080/api/internos';
-  private readonly baseUrl = 'http://localhost:8080/api/internos';
+  private readonly baseUrl = 'http://192.168.1.75:8080/api/internos';
+  // private readonly baseUrl = 'http://localhost:8080/api/internos';
   private http = inject(HttpClient);
 
   getAll(): Observable<Interno[]> {

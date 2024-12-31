@@ -10,7 +10,8 @@ import { AuthService } from './auth.service';
 })
 export class PacienteService {
   // private apiUrl = 'http://172.16.36.147:8080/api/pacientes';
-  private apiUrl = 'http://localhost:8080/api/pacientes';
+  private apiUrl = 'http://192.168.1.75:8080/api/pacientes';
+  // private apiUrl = 'http://localhost:8080/api/pacientes';
 
   constructor(
     private http: HttpClient,

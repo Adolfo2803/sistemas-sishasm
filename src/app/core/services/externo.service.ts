@@ -10,7 +10,8 @@ import { ApoyoExterno} from '../models/personal-medico.model';
 })
 export class ExternoService {
   // private readonly baseUrl = 'http://172.16.36.147:8080/api/apoyo-externo';
-  private readonly baseUrl = 'http://localhost:8080/api/apoyo-externo';
+  private readonly baseUrl = 'http://192.168.1.75:8080/api/apoyo-externo';
+  // private readonly baseUrl = 'http://localhost:8080/api/apoyo-externo';
   private http = inject(HttpClient);
 
   getAll(): Observable<ApoyoExterno[]> {
