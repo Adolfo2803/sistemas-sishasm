@@ -1,0 +1,19 @@
+<div class="container mt-4">
+  <h2>{{ editMode ? 'Editar' : 'Nuevo' }} Residente</h2>
+  <form [formGroup]="residenteForm" (ngSubmit)="onSubmit()" class="mt-3">
+    <div class="mb-3">
+      <label class="form-label">Nombre</label>
+      <input type="text" class="form-control" formControlName="nombre">
+      <div class="text-danger" *ngIf="residenteForm.get('nombre')?.errors?.['required'] && residenteForm.get('nombre')?.touched">
+        El nombre es requerido
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Especialidad</label>
+      <input type="text" class="form-control" formControlName="especialidad">
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="residenteForm.invalid">Guardar</button>
+    <button type="button" class="btn btn-secondary ms-2" routerLink="/dashboard/apoyo/residentes">Cancelar</button>
+  </form>
+</div>
+

@@ -1,0 +1,166 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Pacientes</h2>
+    <button
+      class="btn btn-primary"
+      routerLink="new">
+      <i class="bi bi-plus-circle me-2"></i>Nuevo Paciente
+    </button>
+  </div>
+
+   <!-- Filtros -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Expediente</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="filtros.expediente"
+            placeholder="Buscar por Expediente...">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">CURP</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="filtros.curp"
+            placeholder="Buscar por CURP...">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Nombre</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="filtros.nombre"
+            placeholder="Buscar por Nombre...">
+        </div>
+        <div class="col-12">
+          <button class="btn btn-primary" (click)="buscarPaciente()">
+            <i class="bi bi-search me-2"></i>Buscar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!-- Tabla -->
+   <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+          <tr>
+            <th>Expediente</th>
+            <th>Nombre</th>
+            <th>CURP</th>
+            <th>Edad</th>
+            <th>Teléfono</th>
+            <th>Status</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+      <tbody>
+        @if (pacientesFiltrados.length === 0) {
+          <tr>
+            <td colspan="7" class="text-center py-3">
+              No hay pacientes registrados
+            </td>
+          </tr>
+        }
+        @for (paciente of pacientesFiltrados; track paciente.id) {
+               <tr>
+                <td>{{paciente.expediente}}</td>
+                <td>{{getNombreCompleto(paciente)}}</td>
+                <td>{{paciente.curp}}</td>
+                <td>{{paciente.edad}}</td>
+                <td>{{paciente.telefono || 'N/A'}}</td>
+                <td>
+
+                </td>
+                <td>
+                  <button
+                    class="btn btn-sm btn-outline-info me-2"
+                    (click)="verDetalle(paciente, modalDetalle)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-primary me-2"
+                    [routerLink]="[paciente.id, 'edit']">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="eliminarPaciente(paciente.id)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+        }
+      </tbody>
+    </table>
+
+    <!-- Pagination controls -->
+    @if (totalItems > 0) {
+      <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link" (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
+              Anterior
+            </button>
+          </li>
+          @for (page of getPageNumbers(); track page) {
+            <li class="page-item" [class.active]="page === currentPage">
+              <button class="page-link" (click)="onPageChange(page)">
+                {{page}}
+              </button>
+            </li>
+          }
+          <li class="page-item" [class.disabled]="currentPage === getTotalPages()">
+            <button class="page-link" (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === getTotalPages()">
+              Siguiente
+            </button>
+          </li>
+        </ul>
+      </nav>
+    }
+  </div>
+
+   <!-- Modal de Detalle -->
+  <ng-template #modalDetalle let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Detalle del Paciente</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      @if (pacienteSeleccionado) {
+        <div class="row">
+          <div class="col-md-6">
+            <h5>Información General</h5>
+            <p><strong>Expediente:</strong> {{pacienteSeleccionado.expediente}}</p>
+            <p><strong>Nombre:</strong> {{getNombreCompleto(pacienteSeleccionado)}}</p>
+            <p><strong>CURP:</strong> {{pacienteSeleccionado.curp}}</p>
+            <p><strong>Sexo:</strong> {{pacienteSeleccionado.sexo}}</p>
+            <p><strong>Edad:</strong> {{pacienteSeleccionado.edad}}</p>
+          </div>
+          <div class="col-md-6">
+            <h5>Información de Contacto</h5>
+            <p><strong>Domicilio:</strong> {{pacienteSeleccionado.domicilio || 'No registrado'}}</p>
+            <p><strong>Teléfono:</strong> {{pacienteSeleccionado.telefono || 'No registrado'}}</p>
+            <p><strong>Ubicación:</strong> {{pacienteSeleccionado.ubicacion || 'No registrada'}}</p>
+          </div>
+        </div>
+
+      }
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close()">Cerrar</button>
+    </div>
+  </ng-template>
+</div>
+
+
+
+
+
+
+

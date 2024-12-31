@@ -1,0 +1,19 @@
+<div class="container mt-4">
+  <h2>{{ editMode ? 'Editar' : 'Nuevo' }} Instrumentista</h2>
+  <form [formGroup]="instrumentistaForm" (ngSubmit)="onSubmit()" class="mt-3">
+    <div class="mb-3">
+      <label class="form-label">Nombre</label>
+      <input type="text" class="form-control" formControlName="nombre">
+      <div class="text-danger" *ngIf="instrumentistaForm.get('nombre')?.errors?.['required'] && instrumentistaForm.get('nombre')?.touched">
+        El nombre es requerido
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Especialidad</label>
+      <input type="text" class="form-control" formControlName="especialidad">
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="instrumentistaForm.invalid">Guardar</button>
+    <button type="button" class="btn btn-secondary ms-2" routerLink="/dashboard/personal/instrumentistas">Cancelar</button>
+  </form>
+</div>
+

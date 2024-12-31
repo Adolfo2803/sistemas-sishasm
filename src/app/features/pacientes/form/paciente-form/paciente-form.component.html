@@ -1,0 +1,252 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>{{isEditing ? 'Editar' : 'Nuevo'}} Paciente</h2>
+        <button class="btn btn-secondary" routerLink="/dashboard/pacientes">
+          Volver
+        </button>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="pacienteForm" (ngSubmit)="onSubmit()">
+         <!-- Datos básicos -->
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Expediente *</label>
+            <input type="text" class="form-control" formControlName="expediente">
+            @if (pacienteForm.get('expediente')?.invalid &&
+                 pacienteForm.get('expediente')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+          <div class="col-md-8">
+            <label class="form-label">CURP *</label>
+            <input type="text" class="form-control" formControlName="curp">
+            @if (pacienteForm.get('curp')?.invalid &&
+                 pacienteForm.get('curp')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+        </div>
+
+         <!-- Nombre completo -->
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Nombre(s) *</label>
+            <input type="text" class="form-control" formControlName="nombre">
+            @if (pacienteForm.get('nombre')?.invalid &&
+                 pacienteForm.get('nombre')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Apellido Paterno *</label>
+            <input type="text" class="form-control" formControlName="apPaterno">
+            @if (pacienteForm.get('apPaterno')?.invalid &&
+                 pacienteForm.get('apPaterno')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Apellido Materno *</label>
+            <input type="text" class="form-control" formControlName="apMaterno">
+            @if (pacienteForm.get('apMaterno')?.invalid &&
+                 pacienteForm.get('apMaterno')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+        </div>
+
+         <!-- Datos personales -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Edad *</label>
+            <input type="number" class="form-control" formControlName="edad">
+            @if (pacienteForm.get('edad')?.invalid &&
+                 pacienteForm.get('edad')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Sexo *</label>
+            <select class="form-select" formControlName="sexo">
+              <option value="">Seleccione...</option>
+              <option [value]="TipoSexo.MASCULINO">M</option>
+              <option [value]="TipoSexo.FEMENINO">F</option>
+            </select>
+            @if (pacienteForm.get('sexo')?.invalid &&
+                 pacienteForm.get('sexo')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+
+        </div>
+
+         <!-- Datos de contacto -->
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Teléfono</label>
+            <input type="tel" class="form-control" formControlName="telefono">
+          </div>
+          <div class="col-md-8">
+            <label class="form-label">Domicilio</label>
+            <input type="text" class="form-control" formControlName="domicilio">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-12">
+            <label class="form-label">Ubicación</label>
+            <input type="text" class="form-control" formControlName="ubicacion">
+          </div>
+        </div>
+
+         Botones
+        <div class="d-flex justify-content-end gap-2">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            routerLink="/dashboard/pacientes">
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="pacienteForm.invalid || isSubmitting">
+            {{ isSubmitting ? 'Guardando...' : (isEditing ? 'Actualizar' : 'Guardar') }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!--
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>{{ isEditing ? 'Editar' : 'Nuevo' }} Paciente</h2>
+        <button class="btn btn-secondary" routerLink="/dashboard/pacientes">
+          Volver
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="pacienteForm" (ngSubmit)="onSubmit()">
+         Información Básica
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Expediente *</label>
+            <input type="text" class="form-control" formControlName="expediente">
+            @if (pacienteForm.get('expediente')?.invalid &&
+                 pacienteForm.get('expediente')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">CURP *</label>
+            <input type="text" class="form-control" formControlName="curp">
+            @if (pacienteForm.get('curp')?.invalid &&
+                 pacienteForm.get('curp')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Edad *</label>
+            <input type="number" class="form-control" formControlName="edad">
+            @if (pacienteForm.get('edad')?.invalid &&
+                 pacienteForm.get('edad')?.touched) {
+              <small class="text-danger">Edad inválida</small>
+            }
+          </div>
+        </div>
+
+         Nombre Completo
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Nombre(s) *</label>
+            <input type="text" class="form-control" formControlName="nombre">
+            @if (pacienteForm.get('nombre')?.invalid &&
+                 pacienteForm.get('nombre')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Apellido Paterno *</label>
+            <input type="text" class="form-control" formControlName="apPaterno">
+            @if (pacienteForm.get('apPaterno')?.invalid &&
+                 pacienteForm.get('apPaterno')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Apellido Materno *</label>
+            <input type="text" class="form-control" formControlName="apMaterno">
+            @if (pacienteForm.get('apMaterno')?.invalid &&
+                 pacienteForm.get('apMaterno')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+        </div>
+
+         Datos Adicionales
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Sexo *</label>
+            <select class="form-select" formControlName="sexo">
+              <option value="">Seleccione...</option>
+              <option value="MASCULINO">Masculino</option>
+              <option value="FEMENINO">Femenino</option>
+            </select>
+            @if (pacienteForm.get('sexo')?.invalid &&
+                 pacienteForm.get('sexo')?.touched) {
+              <small class="text-danger">Este campo es requerido</small>
+            }
+          </div>
+
+        </div>
+
+         Datos de Contacto
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Teléfono</label>
+            <input type="tel" class="form-control" formControlName="telefono">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Ubicación</label>
+            <input type="text" class="form-control" formControlName="ubicacion">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-12">
+            <label class="form-label">Domicilio</label>
+            <input type="text" class="form-control" formControlName="domicilio">
+          </div>
+        </div>
+
+         Botones
+        <div class="d-flex justify-content-end gap-2">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            routerLink="/dashboard/pacientes">
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="pacienteForm.invalid || isSubmitting">
+            {{ isSubmitting ? 'Guardando...' : (isEditing ? 'Actualizar' : 'Guardar') }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+ -->
+

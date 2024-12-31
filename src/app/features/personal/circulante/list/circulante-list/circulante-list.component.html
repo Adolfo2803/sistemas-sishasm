@@ -1,0 +1,31 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Lista de Circulantes</h2>
+    <button class="btn btn-primary" routerLink="new">Nuevo Circulante</button>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Especialidad</th>
+        <th>Fecha Creación</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let circulante of circulantes">
+        <td>{{circulante.id}}</td>
+        <td>{{circulante.nombre}}</td>
+        <td>{{circulante.especialidad}}</td>
+        <td>{{circulante.createdAt | date:'short'}}</td>
+        <td>
+        
+          <button class="btn btn-danger btn-sm" (click)="onDelete(circulante.id!)">
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
