@@ -1,0 +1,22 @@
+
+
+
+{
+  path: 'dashboard',
+  loadComponent: () => import('./features/dashboard/dashboard/dashboard.component'),
+  canActivate: [authGuard],
+  children: [
+    {
+      path: 'cirugias',
+      canActivate: [() => roleGuard(['ADMIN', 'CIRUGIAS'])],
+      canMatch: [() => roleGuard(['ADMIN', 'CIRUGIAS'])], // Agregar esta línea
+      children: [/*...*/]
+    },
+    {
+      path: 'pacientes',
+      canActivate: [() => roleGuard(['ADMIN', 'PACIENTES'])],
+      canMatch: [() => roleGuard(['ADMIN', 'PACIENTES'])], // Agregar esta línea
+      children: [/*...*/]
+    }
+  ]
+}
